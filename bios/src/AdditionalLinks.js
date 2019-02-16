@@ -12,10 +12,16 @@ class AdditionalLinks extends Component {
     }
 
     componentDidMount() {
+        console.log("sdkljf")
         if(this.state.url == null) {
-            console.log("here");
-            this.setState({url : "something"});
-
+            fetch("https://api.diffbot.com/v3/article?token=b41e836f07416e871c1df67621067174&url=https://www.theguardian.com/us-news/2019/feb/16/alexandria-ocasio-cortez-2020-endorsement-democrats"
+            , {  
+            method: "GET",
+        }).then(response => response.json())
+        .then(response => {
+            console.log(response);
+            this.setState({url : JSON.stringify(response.objects[0].text)});
+        });
         }
     }
 
@@ -30,7 +36,7 @@ class AdditionalLinks extends Component {
 
         return (
             <div>
-                <h1>Failed</h1>
+                <img src="ajax-loader.gif" alt="loading" height="42" width="42"/>
             </div>
         );
     }

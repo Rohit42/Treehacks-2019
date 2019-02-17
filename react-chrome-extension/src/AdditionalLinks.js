@@ -22,7 +22,7 @@ class AdditionalLinks extends Component {
             .then(response => {
                 this.setState({text : JSON.stringify(response.objects[0].text)});
                 return response;
-            }).then(response => this.getHeadlines(response.hostname));
+            }).then(response => this.getHeadlines(response.objects[0].title));
         }
 
     }
@@ -30,16 +30,32 @@ class AdditionalLinks extends Component {
 
     getHeadlines(query) {
         console.log(query);
-        fetch('https://newsapi.org/v2/everything?q=' + query + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
-
-        }).then(response => response.json()).then(response => {
+        fetch("http://localhost:3000/keyword", {
+            method: "POST",
+            body: JSON.stringify({"text" : query}),
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        }).then(response => response.json()).then(response =>
+            {
             console.log(response);
-            this.setState({
-              headlines: response.articles.slice(0,5)
-            });
-        }).catch(error => {
-            console.log('Error in obtaining headlines', error);
+            fetch('https://newsapi.org/v2/everything?q=' + response.out.join(" ") + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
+
+            }).then(response => response.json()).then(response => {
+                console.log(response);
+                this.setState({
+                  headlines: response.articles.slice(0,5)
+                });
+            }).catch(error => {
+                console.log('Error in obtaining headlines', error);
+            })
+
+            }
+        ).catch(error => {
+            console.log('Failure to get keywords', error);
         });
+
+
       }
 
 

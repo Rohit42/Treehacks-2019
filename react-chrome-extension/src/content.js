@@ -19,6 +19,7 @@ class Main extends React.Component {
       componentDidMount(){
         chrome.runtime.onMessage.addListener(
           (request, sender, sendResponse) => {
+            console.log("received messages");
             this.setState({domain : request.url});
           }
        );
@@ -26,6 +27,8 @@ class Main extends React.Component {
 
 
       render() {
+        console.log("rendering mian");
+        console.log(this.state.domain);
         return (
             <Frame head={[<link type="text/css" rel="stylesheet" href={chrome.runtime.getURL("/static/css/content.css")} ></link>]}> 
                <FrameContextConsumer>

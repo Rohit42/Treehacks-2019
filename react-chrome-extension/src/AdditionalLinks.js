@@ -10,18 +10,18 @@ class AdditionalLinks extends Component {
         };
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         console.log("mount links");
         console.log(this.props.domain);
-        if(this.state.text == null && this.props.domain != null) {
-            fetch(this.props.domain
-            , {  
-            method: "GET",
-        }).then(response => response.json())
-        .then(response => {
-            console.log(response);
-            this.setState({text : JSON.stringify(response.objects[0].text)});
-        });
+        if(this.state.text === null && this.props.domain !== null) {
+            fetch("https://api.diffbot.com/v3/article?token=b41e836f07416e871c1df67621067174&url=" + this.props.domain
+                , {  
+                method: "GET",
+            }).then(response => response.json())
+            .then(response => {
+                console.log(response.objects);
+                this.setState({text : JSON.stringify(response.objects[0].text)});
+            });
         }
 
     }
@@ -29,6 +29,8 @@ class AdditionalLinks extends Component {
 
 
     render() {
+        console.log("rendering additional links");
+        console.log(this.props.domain);
         if(this.state.text) {
             return (
                 <div>

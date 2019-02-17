@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Titillium Web', sans-serif;
 }
 
 #my-extension-root{
@@ -20,3 +20,10 @@ body {
   height: 100%;
   border: none;
 }
+
+.heading {
+  font-weight: 700;
+}
+.subheading {
+  font-weight: 300;
+} 

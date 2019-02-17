@@ -7,7 +7,25 @@ import AdditionalLinks from './AdditionalLinks';
 import "./content.css";
 
 class Main extends React.Component {
-    render() {
+
+
+      constructor(props) {
+          super(props);
+          this.state = { 
+              domain: null
+          };
+      }
+
+      componentDidMount(){
+        chrome.runtime.onMessage.addListener(
+          (request, sender, sendResponse) => {
+            this.setState({domain : request.url});
+          }
+       );
+      }
+
+
+      render() {
         return (
             <Frame head={[<link type="text/css" rel="stylesheet" href={chrome.runtime.getURL("/static/css/content.css")} ></link>]}> 
                <FrameContextConsumer>
@@ -16,7 +34,7 @@ class Main extends React.Component {
                    ({document, window}) => {
                       // Render Children
                         return (
-                            <AdditionalLinks/>
+                            <AdditionalLinks domain={this.state.domain}/>
                         )
                     }
                 }

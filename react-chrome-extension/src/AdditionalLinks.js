@@ -7,25 +7,14 @@ class AdditionalLinks extends Component {
         super(props);
         this.state = { 
             text: null,
-            domain: null
         };
     }
 
     componentDidMount() {
-
-        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-            const url = new URL(tabs[0].url);
-            const domain = url.hostname;
-            this.setState({domain: domain});
-            this.getText(domain);
-          });
-
-
-    }
-
-    getText(domain) {
-        if(this.state.text == null && domain != null) {
-            fetch(domain
+        console.log("mount links");
+        console.log(this.props.domain);
+        if(this.state.text == null && this.props.domain != null) {
+            fetch(this.props.domain
             , {  
             method: "GET",
         }).then(response => response.json())
@@ -34,7 +23,10 @@ class AdditionalLinks extends Component {
             this.setState({text : JSON.stringify(response.objects[0].text)});
         });
         }
+
     }
+
+
 
     render() {
         if(this.state.text) {

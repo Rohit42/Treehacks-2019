@@ -16,10 +16,11 @@
   ],
   "web_accessible_resources":[
     "/images/ajax-loader.gif",
-    "/static/css/content.css"
+    "/static/css/content.css",
+    "*.html"
   ],
   "permissions": [
-    "tabs"
+    "tabs", "contextMenus"
   ],
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
 }

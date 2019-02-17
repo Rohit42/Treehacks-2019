@@ -15,6 +15,33 @@ constructor(props) {
 			headlines: []
 		};
 	}
+    processArticle(article) {
+        fetch("https://api.diffbot.com/v3/article?token=b41e836f07416e871c1df67621067174&url=" + encodeURIComponent(article.url)
+            , {
+                method: "GET",
+            }).then(response => response.json()).then(response => {
+                fetch("https://language.googleapis.com/v1/documents:analyzeSentiment?key=AIzaSyDLkj36LHrQg1k5b07j3izTdjT2zSckhIE", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        "document": {
+                            "type": "PLAIN_TEXT",
+                            "language": "en",
+                            "content": response.objects[0].text,
+                        },
+                        "encodingType": "utf8"
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json()).then(response => {
+                    var se = 0
+                    for (var i = 0; i < response.sentences.length; i++) {
+                    se += response.sentences[i].sentiment.score;
+                } response['sentiment'] = se/response.sentences.length;
+                console.log(response);
+            }).catch(error => { console.log('Error in GCloud', error); })
+            }).catch(error => { console.log('Error in DiffBot', error); });
+    }
 
 	componentDidUpdate() {
 		console.log("mount links");
@@ -48,10 +75,15 @@ constructor(props) {
 			fetch('https://newsapi.org/v2/everything?q=' + keywords + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
 
 			}).then(response => response.json()).then(response => {
+				var f = response.articles.slice(0, 5);
+                		f.push({ url: this.props.domain });
 				console.log(response);
-				this.setState({
-				  headlines: response.articles.slice(0,5)
-				});
+				for (var i = 0; i < f.length; i++) {
+                        		this.processArticle(f[i]);
+                    		}
+                    		this.setState({
+                        		headlines: response.articles.slice(0,5)
+                      		});
 			}).catch(error => {
 				console.log('Error in obtaining headlines', error);
 			})

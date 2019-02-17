@@ -7,6 +7,7 @@ class AdditionalLinks extends Component {
         super(props);
         this.state = { 
             text: null,
+            headlines: []
         };
     }
 
@@ -19,13 +20,27 @@ class AdditionalLinks extends Component {
                 method: "GET",
             }).then(response => response.json())
             .then(response => {
-                console.log(response.objects);
                 this.setState({text : JSON.stringify(response.objects[0].text)});
-            });
+                return response;
+            }).then(response => this.getHeadlines(response.hostname));
         }
 
     }
 
+
+    getHeadlines(query) {
+        console.log(query);
+        fetch('https://newsapi.org/v2/everything?q=' + query + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
+
+        }).then(response => response.json()).then(response => {
+            console.log(response);
+            this.setState({
+              headlines: response.articles.slice(0,5)
+            });
+        }).catch(error => {
+            console.log('Error in obtaining headlines', error);
+        });
+      }
 
 
     render() {
@@ -34,7 +49,11 @@ class AdditionalLinks extends Component {
         if(this.state.text) {
             return (
                 <div>
-                    <h1>{this.state.text}</h1>
+                    <h1>{this.props.domain}</h1>
+                    Top Headlines:
+                    {this.state.headlines.map(headline => (
+                    <h4 className="link" onClick={() => {
+                        window.open(headline.url)}}>{headline.title}</h4>))}
                 </div>
             );
         }

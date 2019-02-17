@@ -6,9 +6,9 @@ import "./content.css";
 
 
 class AdditionalLinks extends Component {
+    
 
-
-	constructor(props) {
+constructor(props) {
 		super(props);
 		this.state = { 
 			text: null,
@@ -95,6 +95,7 @@ class AdditionalLinks extends Component {
 			</div>
 		);
 	}
+
 }
 
 export default AdditionalLinks;

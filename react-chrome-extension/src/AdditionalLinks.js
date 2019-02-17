@@ -1,5 +1,6 @@
 /*global chrome*/
 import React, { Component } from 'react';
+import { stops } from './words';
 class AdditionalLinks extends Component {
 
 
@@ -39,7 +40,8 @@ class AdditionalLinks extends Component {
         }).then(response => response.json()).then(response =>
             {
             console.log(response);
-            fetch('https://newsapi.org/v2/everything?q=' + response.out.join(" ") + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
+            var keywords = response.out.filter(function (x) { return stops.indexOf(x) < 0 }).join(" ");
+            fetch('https://newsapi.org/v2/everything?q=' + keywords + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
 
             }).then(response => response.json()).then(response => {
                 console.log(response);

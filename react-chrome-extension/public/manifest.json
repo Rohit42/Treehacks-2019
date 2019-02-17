@@ -22,5 +22,6 @@
   "permissions": [
     "tabs", "contextMenus"
   ],
+  
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
 }

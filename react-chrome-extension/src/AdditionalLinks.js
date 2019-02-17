@@ -13,7 +13,8 @@ constructor(props) {
 		this.state = { 
 			text: null,
             headlines: [],
-            biases: {}
+			biases: {},
+			entities: {}
 		};
     }
     median(numbers) {
@@ -56,7 +57,36 @@ constructor(props) {
                     this.setState({
                         biases: bia
                     });
-            }).catch(error => { console.log('Error in GCloud', error); })
+			}).catch(error => { console.log('Error in GCloud', error); });
+			console.log(response);
+			fetch("https://language.googleapis.com/v1/documents:analyzeEntities?key=AIzaSyDLkj36LHrQg1k5b07j3izTdjT2zSckhIE", {
+				method: "POST",
+				body: JSON.stringify({
+					"document": {
+						"type": "PLAIN_TEXT",
+						"language": "en",
+						"content": response.objects[0].text,
+					},
+					"encodingType": "utf8"
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(response => response.json()).then(response => {
+				console.log(response.entities);
+				let entities = {};
+				response.entities.sort(function(a, b) {return b.salience-a.salience})
+				for (var i = 0; i < 8; i++) {
+					if (response.entities[i].metadata && response.entities[i].metadata.wikipedia_url) {
+						entities[response.entities[i].name] = response.entities[i].metadata.wikipedia_url;
+					}
+				}
+				console.log(entities)
+				this.setState({entities: entities});
+
+			}
+				)
+			
             }).catch(error => { console.log('Error in DiffBot', error); });
     }
 
@@ -128,11 +158,18 @@ constructor(props) {
 			return (
 				<div>
 
+					{Object.keys(this.state.entities).map(ent => (
+
+					<div className="chip" onClick={() => { window.open(this.state.entities[ent]) }}>
+						{ent}
+					</div> ))}
+
 					<div className="card">
 					  <div className="container">
 							<p><b>Current Bias:</b> {isNaN((this.state.biases[this.props.domain]-med).toFixed(2)) ? "--" : (this.state.biases[this.props.domain]-med).toFixed(2)}</p>
 					  </div>
 					</div>
+
 
 
 					{heads.map(headline => (

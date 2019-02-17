@@ -16,6 +16,16 @@
   margin-bottom: 10px;	
 }
 
+.chip {
+  display: inline-block;
+  padding: 0 12px;
+  height: 30px;
+  font-size: 12px;
+  line-height: 30px;
+  border-radius: 12px;
+  background-color: #f1f1f1;
+}
+
 /* On mouse-over, add a deeper shadow */
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);

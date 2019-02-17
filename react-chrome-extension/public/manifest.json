@@ -16,6 +16,7 @@
   ],
   "web_accessible_resources":[
     "/images/ajax-loader.gif",
+    "/images/logo.png",
     "/static/css/content.css",
     "*.html"
   ],

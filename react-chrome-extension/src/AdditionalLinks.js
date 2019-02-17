@@ -92,6 +92,8 @@ constructor(props) {
 		return (
 			<div>
 				<img className="loading" src={chrome.runtime.getURL("./images/ajax-loader.gif")} alt="loading" height="42" width="42"/>
+				<img className="logo" src={chrome.runtime.getURL("./images/logo.png")} alt="loading" height="42" width="42"/>
+
 			</div>
 		);
 	}

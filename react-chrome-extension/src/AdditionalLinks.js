@@ -127,14 +127,21 @@ constructor(props) {
 		if(this.state.text) {
 			return (
 				<div>
-                    <div> <h2>Current Bias: {(this.state.biases[this.props.domain] - med).toFixed(2)}</h2></div>
+
+					<div className="card">
+					  <div className="container">
+							<p><b>Current Bias:</b> {isNaN((this.state.biases[this.props.domain]-med).toFixed(2)) ? "--" : (this.state.biases[this.props.domain]-med).toFixed(2)}</p>
+					  </div>
+					</div>
+
+
 					{heads.map(headline => (
 
 					<div className="card">
 					  <img className="full-width" src={headline.urlToImage} alt=""/>
 					  <div className="container">
-                                <h4 onClick={() => { window.open(headline.url) }}> <b>{headline.title} </b> </h4> <p>Bias:{(this.state.biases[headline.url]-med).toFixed(2)}</p>
-					    <p>{headline.content}</p> 
+                                <h4 onClick={() => { window.open(headline.url) }}> <b>{headline.title} </b> </h4>
+								<p>Bias: {isNaN((this.state.biases[headline.url]-med).toFixed(2)) ? "--" : (this.state.biases[headline.url]-med).toFixed(2)}</p>					    <p>{headline.content}</p> 
 					  </div>
 					</div>
 

@@ -30,11 +30,11 @@ constructor(props) {
         return median;
     }
     processArticle(article) {
-        fetch("https://api.diffbot.com/v3/article?token=b41e836f07416e871c1df67621067174&url=" + encodeURIComponent(article.url)
+        fetch("https://api.diffbot.com/v3/article?token=" + process.env.DIFF_BOT + "&url=" + encodeURIComponent(article.url)
             , {
                 method: "GET",
             }).then(response => response.json()).then(response => {
-                fetch("https://language.googleapis.com/v1/documents:analyzeSentiment?key=AIzaSyDLkj36LHrQg1k5b07j3izTdjT2zSckhIE", {
+                fetch("https://language.googleapis.com/v1/documents:analyzeSentiment?key="+process.env.GOOGLE, {
                     method: "POST",
                     body: JSON.stringify({
                         "document": {
@@ -59,7 +59,7 @@ constructor(props) {
                     });
 			}).catch(error => { console.log('Error in GCloud', error); });
 			console.log(response);
-			fetch("https://language.googleapis.com/v1/documents:analyzeEntities?key=AIzaSyDLkj36LHrQg1k5b07j3izTdjT2zSckhIE", {
+			fetch("https://language.googleapis.com/v1/documents:analyzeEntities?key="+process.env.GOOGLE, {
 				method: "POST",
 				body: JSON.stringify({
 					"document": {
@@ -94,7 +94,7 @@ constructor(props) {
 		console.log("mount links");
 		console.log(this.props.domain);
 		if(this.state.text === null && this.props.domain !== null) {
-			fetch("https://api.diffbot.com/v3/article?token=b41e836f07416e871c1df67621067174&url=" + this.props.domain
+			fetch("https://api.diffbot.com/v3/article?token="+process.env.DIFF_BOT+"&url=" + this.props.domain
 				, {  
 				method: "GET",
 			}).then(response => response.json())
@@ -119,7 +119,7 @@ constructor(props) {
 			{
 			console.log(response);
 			var keywords = response.out.filter(function (x) { return stops.indexOf(x) < 0 }).join(" ");
-			fetch('https://newsapi.org/v2/everything?q=' + keywords + "&language=en&apiKey=a28f02fd873b4785bb77ccdb5692d54f",{
+			fetch('https://newsapi.org/v2/everything?q=' + keywords + "&language=en&apiKey="+process.env.NEWS,{
 
             }).then(response => response.json()).then(response => {
                 let url = this.props.domain;
